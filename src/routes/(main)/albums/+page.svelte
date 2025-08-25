@@ -4,7 +4,7 @@
   import { notify, confirm } from "$lib/stores/ui";
   import { goto } from "$app/navigation";
 
-  let albums = [];
+  let albums: any[] = [];
   let newAlbumName = "";
 
   async function refresh() {

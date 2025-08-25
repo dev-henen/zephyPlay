@@ -6,6 +6,7 @@
   import { addSong, getAlbums, createAlbum, getRecentSongs, deleteSong } from "$lib/db";
   import { notify, confirm } from "$lib/stores/ui";
   import { fmtTime } from "$lib/utils";
+  import { truncateText } from "$lib";
 
   // Player / input state
   let inputUrl = "";
@@ -171,7 +172,7 @@
               {#if saving}Saving…{:else}Save{/if}
             </button>
 
-            <select class="ml-auto bg-white/10 text-white rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500" bind:value={selectedAlbumId}>
+            <select class="ml-auto bg-white/10 text-gray-500 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500" bind:value={selectedAlbumId}>
               <option value={null}>No album</option>
               {#each albums as a}
                 <option value={a.id}>{a.name}</option>
@@ -217,7 +218,7 @@
                 <img src={s.thumbnail ?? "/default_wallpaper.jpg"} alt="thumb" class="w-full h-full object-cover" />
               </div>
               <div class="truncate">
-                <div class="font-medium truncate">{s.title ?? s.url}</div>
+                <div class="font-medium truncate">{truncateText(s.title ?? s.url, 20)}</div>
                 <div class="text-xs text-gray-400">{s.platform ?? "—"} · {fmtTime(s.duration || 0)}</div>
               </div>
             </div>

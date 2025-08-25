@@ -5,15 +5,16 @@
   import { loadUrl } from "$lib/stores/player";
   import { notify, confirm } from "$lib/stores/ui";
   import { fmtTime } from "$lib/utils";
+  import { truncateText } from "$lib";
 
-  let songs = [];
+  let songs: any[] = [];
   $: albumId = Number($page.params.id);
 
   async function refresh() {
     songs = await getSongsByAlbum(albumId);
   }
 
-  async function loadSong(s) {
+  async function loadSong(s: any) {
     await loadUrl(s.url);
   }
 
@@ -37,7 +38,7 @@
     {#each songs as s}
       <div class="flex items-center justify-between p-2 hover:bg-white/2 rounded text-sm">
         <div class="truncate">
-          <div class="font-medium truncate">{s.title ?? s.url}</div>
+          <div class="font-medium truncate">{truncateText(s.title ?? s.url, 20)}</div>
           <div class="text-xs text-gray-300">{s.platform ?? "—"} · {fmtTime(s.duration || 0)}</div>
         </div>
         <div class="flex gap-2">
