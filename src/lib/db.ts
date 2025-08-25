@@ -18,6 +18,7 @@ export interface AlbumRow {
   name: string;
   createdAt: number;
   description?: string | null;
+  thumbnail?: string | null;
 }
 
 export interface FileRow {
