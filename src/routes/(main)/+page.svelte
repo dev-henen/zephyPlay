@@ -22,7 +22,7 @@
   // library UI state
   let albums: AlbumRow[] = [];
   let recentSongs: SongRow[] = [];
-  let selectedAlbumId: number | null = null;
+  let selectedAlbumId: any = null;
   let newAlbumName = '';
   let saving = false;
 
