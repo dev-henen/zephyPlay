@@ -117,3 +117,37 @@ export async function getFileBlob(fileId: number): Promise<FileRow | undefined> 
 export async function deleteFile(fileId: number) {
   await db.files.delete(fileId);
 }
+
+/* --- search helpers (append to src/lib/db.ts) --- */
+
+/**
+ * Search songs by title OR url (case-insensitive).
+ * Uses Dexie's .filter for flexible matching (fine for small-to-medium DBs).
+ */
+export async function searchSongs(query: string, limit = 50): Promise<SongRow[]> {
+  if (!query || !query.trim()) return [];
+  const q = query.trim().toLowerCase();
+  // filter and then sort by addedAt desc, then limit
+  const arr = await db.songs
+    .filter((s: SongRow) => {
+      const hay = ((s.title ?? s.url) ?? "").toString().toLowerCase();
+      return hay.includes(q);
+    })
+    .toArray();
+  // sort by addedAt desc and limit
+  arr.sort((a, b) => (b.addedAt ?? 0) - (a.addedAt ?? 0));
+  return arr.slice(0, limit);
+}
+
+/**
+ * Search albums by name (case-insensitive).
+ */
+export async function searchAlbums(query: string, limit = 20): Promise<AlbumRow[]> {
+  if (!query || !query.trim()) return [];
+  const q = query.trim().toLowerCase();
+  const arr = await db.albums
+    .filter((a: AlbumRow) => (a.name ?? "").toLowerCase().includes(q))
+    .toArray();
+  arr.sort((a, b) => (b.createdAt ?? 0) - (a.createdAt ?? 0));
+  return arr.slice(0, limit);
+}
