@@ -165,10 +165,10 @@
   });
 </script>
 
-<div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
   <!-- Main Player + Recent Songs -->
   <div
-    class="col-span-2 bg-white/5 backdrop-blur-md rounded-2xl p-6 shadow-lg flex flex-col gap-6"
+    class="md:col-span-2 bg-white/5 backdrop-blur-md rounded-2xl p-6 shadow-lg flex flex-col gap-6"
   >
     <div class="flex flex-col lg:flex-row gap-6">
       <!-- Album Art + Play Button -->

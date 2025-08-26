@@ -8,8 +8,9 @@
     statusText,
   } from "$lib/stores/player";
   import { fmtTime } from "$lib/utils";
-  import { onMount } from "svelte";
   import { page } from "$app/stores";
+  import { truncateText } from "$lib";
+  import { goto } from "$app/navigation";
 
   function onSeek(e: Event) {
     const v = Number((e.target as HTMLInputElement).value || 0);
@@ -30,13 +31,18 @@
 <!-- Desktop / Large Screen Player -->
 {#if $info.id && $page.url.pathname !== "/play"}
   <div
-    class="fixed bottom-4 left-1/2 transform -translate-x-1/2 w-[calc(100%-2rem)] max-w-[1100px] z-50 hidden sm:block"
+    class="fixed bottom-4 left-1/2 transform -translate-x-1/2 w-[calc(100%-2rem)] max-w-[1100px] z-50"
   >
     <div
-      class="bg-white/5 backdrop-blur-md rounded-3xl p-3 flex items-center gap-4 shadow-lg -ml-5"
+      class="bg-white/5 backdrop-blur-md rounded-3xl p-3 flex items-center gap-4 shadow-lg md:-ml-5"
     >
       <!-- Album Art (click to open fullscreen on mobile) -->
-      <button on:click={() => {}} aria-label="Open fullscreen player">
+      <button
+        on:click={() => {
+          goto("/play");
+        }}
+        aria-label="Open fullscreen player"
+      >
         <div
           class="w-16 h-16 rounded-2xl overflow-hidden flex-shrink-0 bg-white/10"
         >
@@ -51,9 +57,20 @@
       <!-- Track Info + Controls -->
       <div class="flex-1 flex flex-col gap-2">
         <div class="flex items-center justify-between gap-4">
-          <div class="truncate">
-            <div class="font-medium truncate text-white">
-              {$info.title ?? "No title"}
+          <div
+            class="truncate"
+            on:click={() => {
+              goto(`/play`);
+            }}
+            on:keydown={() => {}}
+            role="button"
+            tabindex="0"
+          >
+            <div class="font-medium truncate text-white md:hidden">
+              {truncateText($info.title ?? "No title", 20)}
+            </div>
+            <div class="font-medium truncate text-white hidden md:block">
+              {truncateText($info.title ?? "No title", 60)}
             </div>
             <div class="text-xs text-gray-300">
               {$statusText === "playing" ? "Playing" : "Loaded"}
@@ -64,7 +81,7 @@
           <div class="flex items-center gap-3">
             <!-- Back 10s -->
             <button
-              class="p-2 rounded-lg bg-white/10 hover:bg-white/20 transition"
+              class="p-2 rounded-lg bg-white/10 hover:bg-white/20 transition hidden md:inline-block"
               on:click={skipBack10}
               aria-label="Back 10s"
             >
@@ -115,7 +132,7 @@
 
             <!-- Forward 10s -->
             <button
-              class="p-2 rounded-lg bg-white/10 hover:bg-white/20 transition"
+              class="p-2 rounded-lg bg-white/10 hover:bg-white/20 transition hidden md:inline-block"
               on:click={skipForward10}
               aria-label="Forward 10s"
             >
