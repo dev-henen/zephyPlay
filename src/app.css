@@ -6,3 +6,9 @@
         @apply !overflow-hidden text-white;
     }
 }
+
+@layer components {
+    .container {
+        @apply max-w-6xl mx-auto px-4;
+    }
+}

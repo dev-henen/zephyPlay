@@ -29,6 +29,7 @@ export const loading = writable(false);
 export const shuffle = writable(false);
 export const repeatMode = writable<"off" | "one" | "all">("off");
 export const liked = writable(false);
+export const url = writable<string | null>(null);
 
 let poll: number | null = null;
 const PLAYER_CONTAINER_ID = "universal-player-container";
@@ -53,6 +54,7 @@ export async function fetchServerMeta(url: string) {
 
 export async function loadUrl(inputUrl: string, auto = false) {
   // cleanup previous
+  url.set(inputUrl);
   get(adapter)?.destroy();
   adapter.set(null);
   stopPolling();
